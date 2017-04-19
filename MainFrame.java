@@ -9,8 +9,16 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -48,8 +56,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton chooseKey;
 	private JFileChooser fc1;
 	//private int returnVal;
-	private File file;
+	File file;
 	private File key;
+	private File cipher;
 	
 	private JTextPane titleDec;
 	private JTextArea fileContainerD;
@@ -138,12 +147,29 @@ public class MainFrame extends JFrame implements ActionListener{
         		
         	} else {
             	//process encrypt/decrypt, popup, next page
-        		
+        		try {
+        			Scanner in = new Scanner(key);
+        			String keyCTR = in.nextLine();
+        			if(keyCTR.length()==32||keyCTR.length()==48||keyCTR.length()==64){
+        				CTRnew CTR = new CTRnew(keyCTR);
+        				byte[] plainByte = toByteArray(file);
+        				byte[] keyByte = keyCTR.getBytes("UTF-8");
+        				byte[] cipherByte = CTR.encrypt(plainByte, keyByte);
+        				writeToFile(cipherByte, cipher);
+        				//success
+        			} else {
+        				//not 32/48/64
+        			}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         		
         		fileContainer.setText("Drop your file here");
         		keyContainer.setText("Drop your key file here");
         		this.file = null;
         		this.key = null;
+        		this.cipher = null;
         		mainPanel.removeAll();
     			mainPanel.add(parentPanel);
     			mainPanel.repaint();
@@ -163,7 +189,7 @@ public class MainFrame extends JFrame implements ActionListener{
             int returnValD = fc1D.showOpenDialog(decPanel);
 
             if (returnValD == JFileChooser.APPROVE_OPTION) {
-                file = fc1D.getSelectedFile();
+                cipher = fc1D.getSelectedFile();
                 fileContainerD.setText(file.getName());
                 //process file
             } 
@@ -177,17 +203,34 @@ public class MainFrame extends JFrame implements ActionListener{
                 //process file
             } 
         } else {
-        	if(file==null&&key==null){
+        	if(cipher==null&&key==null){
         		
         	} else {
             	//process encrypt/decrypt, popup, next page
-        		
+        		try {
+        			Scanner in = new Scanner(key);
+        			String keyCTR = in.nextLine();
+        			if(keyCTR.length()==32||keyCTR.length()==48||keyCTR.length()==64){
+        				CTRnew CTR = new CTRnew(keyCTR);
+        				byte[] cipherByte = toByteArray(cipher);
+        				byte[] keyByte = keyCTR.getBytes("UTF-8");
+        				byte[] plainByte = CTR.encrypt(cipherByte, keyByte);
+        				writeToFile(plainByte, file);
+        				//success
+        			} else {
+        				//not 32/48/64
+        			}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         		
         		
         		fileContainerD.setText("Drop your file here");
         		keyContainerD.setText("Drop your key file here");
         		this.file = null;
         		this.key = null;
+        		this.cipher = null;
         		mainPanel.removeAll();
     			mainPanel.add(parentPanel);
     			mainPanel.repaint();
@@ -437,7 +480,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		            for (File file : droppedFiles) {
 		                // process files
 		            	fileContainerD.setText(file.getName());
-		            	file = file;
+		            	cipher = file;
 		            }
 		        } catch (Exception ex) {
 		            ex.printStackTrace();
@@ -482,6 +525,30 @@ public class MainFrame extends JFrame implements ActionListener{
 		panel.add(chooseFileD);
 		panel.add(chooseKeyD);
 	}
+	
+	public static void writeToFile(byte[] data, File file) throws IOException {
+        FileOutputStream stream = new FileOutputStream(file);
+
+        stream.write(data);
+        stream.close();
+    }
+	
+	 public static byte[] toByteArray(File file) throws IOException {
+	        FileInputStream stream = new FileInputStream(file);
+	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+	        int numData;
+	        byte[] data = new byte[16384];
+
+	        while ((numData = stream.read(data)) != -1) {
+	            buffer.write(data, 0, numData);
+	        }
+	        buffer.flush();
+
+	        byte[] byteResult = buffer.toByteArray();
+
+	        return byteResult;
+	    }
 	
 }
 
