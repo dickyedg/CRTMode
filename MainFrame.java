@@ -158,6 +158,7 @@ public class MainFrame extends JFrame implements ActionListener{
         				writeToFile(cipherByte, cipher);
         				//success
         			} else {
+        				
         				//not 32/48/64
         			}
 				} catch (Exception e1) {
@@ -190,7 +191,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
             if (returnValD == JFileChooser.APPROVE_OPTION) {
                 cipher = fc1D.getSelectedFile();
-                fileContainerD.setText(file.getName());
+                fileContainerD.setText(cipher.getName());
                 //process file
             } 
         } else if(e.getSource() == chooseKeyD) {
@@ -353,10 +354,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		            evt.acceptDrop(DnDConstants.ACTION_COPY);
 		            List<File> droppedFiles = (List<File>)
 		                evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-		            for (File file : droppedFiles) {
+		            for (File files : droppedFiles) {
 		                // process files
-		            	fileContainer.setText(file.getName());
-		            	file = file;
+		            	fileContainer.setText(files.getName());
+		            	file = files;
 		            }
 		        } catch (Exception ex) {
 		            ex.printStackTrace();
@@ -528,26 +529,22 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public static void writeToFile(byte[] data, File file) throws IOException {
         FileOutputStream stream = new FileOutputStream(file);
-
+        
         stream.write(data);
         stream.close();
     }
 	
 	 public static byte[] toByteArray(File file) throws IOException {
-	        FileInputStream stream = new FileInputStream(file);
-	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-	        int numData;
-	        byte[] data = new byte[16384];
-
-	        while ((numData = stream.read(data)) != -1) {
-	            buffer.write(data, 0, numData);
+	        FileInputStream stream = null;
+	        byte[] byteResult = new byte[(int) file.length()];
+	        try{
+	        	stream = new FileInputStream(file);
+	        	stream.read(byteResult);
+	        	stream.close();
+	        } catch (IOException io){
+	        	io.printStackTrace();
 	        }
-	        buffer.flush();
-
-	        byte[] byteResult = buffer.toByteArray();
-
-	        return byteResult;
+	       	return byteResult;
 	    }
 	
 }
