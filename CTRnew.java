@@ -29,7 +29,7 @@ public class CTRnew {
         //this.s_KEY = generateKEY(key);
     }
 
-    protected byte[] encrypt(String strToEncrypt, byte[] keyy) throws InvalidKeyException,
+    protected byte[] encrypt(byte[] plain, byte[] keyy) throws InvalidKeyException,
             InvalidAlgorithmParameterException, IllegalBlockSizeException,
             BadPaddingException, UnsupportedEncodingException {
 
@@ -43,10 +43,9 @@ public class CTRnew {
         r.nextBytes(byteIV);
         IvParameterSpec IV = new IvParameterSpec(byteIV);
     	
-        byte[] byteToEncrypt = strToEncrypt.getBytes("UTF-8");
         System.out.println(s_KEY);
         this.c.init(Cipher.ENCRYPT_MODE, s_KEY, IV);
-        byte[] encryptedBytes = this.c.doFinal(byteToEncrypt);
+        byte[] encryptedBytes = this.c.doFinal(plain);
        
         byte[] result = concateEncryption(byteIV,encryptedBytes);
         
