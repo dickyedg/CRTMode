@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
@@ -56,7 +57,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton chooseKey;
 	private JFileChooser fc1;
 	//private int returnVal;
-	File file;
+	private File file;
 	private File key;
 	private File cipher;
 	
@@ -72,7 +73,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JButton chooseFileD;
 	private JButton chooseKeyD;
 	private JFileChooser fc1D;
-	
 	
 	public MainFrame() {
 		mainPanel = new JPanel(new CardLayout());
@@ -111,7 +111,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		springLayout = new SpringLayout();
 		
 		
-		buttonEnc = new JButton("Ecryption");
+		buttonEnc = new JButton("Encryption");
 		buttonEnc.addActionListener(this);
 		
 		buttonDec = new JButton("Decryption");
@@ -143,8 +143,8 @@ public class MainFrame extends JFrame implements ActionListener{
                 //process file
             } 
         } else if(e.getSource()==encryptButton){
-        	if(file==null&&key==null){
-        		
+        	if(file==null||key==null){
+        		JOptionPane.showMessageDialog(null, "Please choose the file and the key first!", "Warning", JOptionPane.WARNING_MESSAGE);
         	} else {
             	//process encrypt/decrypt, popup, next page
         		try {
@@ -157,13 +157,15 @@ public class MainFrame extends JFrame implements ActionListener{
         				byte[] cipherByte = CTR.encrypt(plainByte, keyByte);
         				writeToFile(cipherByte, cipher);
         				//success
+        				JOptionPane.showMessageDialog(null, "Success encrypted " + file.getName() + " into " + cipher.getName() + ".", "Success", JOptionPane.INFORMATION_MESSAGE);
         			} else {
-        				
+        				JOptionPane.showMessageDialog(null, "Key size must be 32/48/64 bytes", "Error", JOptionPane.ERROR_MESSAGE);
         				//not 32/48/64
         			}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Uh oh! Something went wrong", "Error", JOptionPane.ERROR_MESSAGE);
 				}
         		
         		fileContainer.setText("Drop your file here");
@@ -204,8 +206,8 @@ public class MainFrame extends JFrame implements ActionListener{
                 //process file
             } 
         } else {
-        	if(cipher==null&&key==null){
-        		
+        	if(cipher==null||key==null){
+        		JOptionPane.showMessageDialog(null, "Please choose the cipher and the key first!", "Warning", JOptionPane.WARNING_MESSAGE);
         	} else {
             	//process encrypt/decrypt, popup, next page
         		try {
@@ -217,13 +219,16 @@ public class MainFrame extends JFrame implements ActionListener{
         				byte[] keyByte = keyCTR.getBytes("UTF-8");
         				byte[] plainByte = CTR.encrypt(cipherByte, keyByte);
         				writeToFile(plainByte, file);
+        				JOptionPane.showMessageDialog(null, "Success decrypted " + file.getName() + " into " + cipher.getName() + ".", "Success", JOptionPane.INFORMATION_MESSAGE);
         				//success
         			} else {
+        				JOptionPane.showMessageDialog(null, "Key size must be 32/48/64 bytes", "Error", JOptionPane.ERROR_MESSAGE);
         				//not 32/48/64
         			}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Uh oh! Something went wrong", "Error", JOptionPane.ERROR_MESSAGE);
 				}
         		
         		
