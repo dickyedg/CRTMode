@@ -100,6 +100,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.setSize(555, 365);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
 	}
 
 	public void createParentPanel(JPanel panel){
@@ -217,7 +218,7 @@ public class MainFrame extends JFrame implements ActionListener{
         				CTRnew CTR = new CTRnew(keyCTR);
         				byte[] cipherByte = toByteArray(cipher);
         				byte[] keyByte = keyCTR.getBytes("UTF-8");
-        				byte[] plainByte = CTR.encrypt(cipherByte, keyByte);
+        				byte[] plainByte = CTR.decrypt(cipherByte, keyByte);
         				writeToFile(plainByte, cipher);
         				JOptionPane.showMessageDialog(null, "Decryption Success", "Success", JOptionPane.INFORMATION_MESSAGE);
         				//success
@@ -534,7 +535,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public static void writeToFile(byte[] data, File file) throws IOException {
         FileOutputStream stream = new FileOutputStream(file);
-        
+        //stream.write(("").getBytes());
         stream.write(data);
         stream.close();
     }

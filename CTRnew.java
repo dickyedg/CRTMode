@@ -1,3 +1,4 @@
+package AES;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -57,7 +58,7 @@ public class CTRnew {
 
     }
 
-    protected String decrypt(byte[] byteToDecrypt, byte[] key) throws InvalidKeyException,
+    protected byte[] decrypt(byte[] byteToDecrypt, byte[] key) throws InvalidKeyException,
             InvalidAlgorithmParameterException, IllegalBlockSizeException,
             BadPaddingException {
 
@@ -83,9 +84,7 @@ public class CTRnew {
 
         byte[] plainByte = this.c.doFinal(actualCipher);
 
-        String plainText = new String(plainByte);
-
-        return plainText;
+        return plainByte;
 
     }
 
