@@ -155,9 +155,9 @@ public class MainFrame extends JFrame implements ActionListener{
         				byte[] plainByte = toByteArray(file);
         				byte[] keyByte = keyCTR.getBytes("UTF-8");
         				byte[] cipherByte = CTR.encrypt(plainByte, keyByte);
-        				writeToFile(cipherByte, cipher);
+        				writeToFile(cipherByte, file);
         				//success
-        				JOptionPane.showMessageDialog(null, "Success encrypted " + file.getName() + " into " + cipher.getName() + ".", "Success", JOptionPane.INFORMATION_MESSAGE);
+        				JOptionPane.showMessageDialog(null, "Encryption Success", "Success", JOptionPane.INFORMATION_MESSAGE);
         			} else {
         				JOptionPane.showMessageDialog(null, "Key size must be 32/48/64 bytes", "Error", JOptionPane.ERROR_MESSAGE);
         				//not 32/48/64
@@ -218,8 +218,8 @@ public class MainFrame extends JFrame implements ActionListener{
         				byte[] cipherByte = toByteArray(cipher);
         				byte[] keyByte = keyCTR.getBytes("UTF-8");
         				byte[] plainByte = CTR.encrypt(cipherByte, keyByte);
-        				writeToFile(plainByte, file);
-        				JOptionPane.showMessageDialog(null, "Success decrypted " + file.getName() + " into " + cipher.getName() + ".", "Success", JOptionPane.INFORMATION_MESSAGE);
+        				writeToFile(plainByte, cipher);
+        				JOptionPane.showMessageDialog(null, "Decryption Success", "Success", JOptionPane.INFORMATION_MESSAGE);
         				//success
         			} else {
         				JOptionPane.showMessageDialog(null, "Key size must be 32/48/64 bytes", "Error", JOptionPane.ERROR_MESSAGE);
