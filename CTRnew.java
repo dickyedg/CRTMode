@@ -1,4 +1,4 @@
-package AES;
+package ctr;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;

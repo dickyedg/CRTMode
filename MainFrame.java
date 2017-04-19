@@ -1,4 +1,4 @@
-package AES;
+package ctr;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -30,6 +30,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 
+/**
+ * @author Rizky Noviandi Purwono
+ * @NPM 1406559111
+ */
 public class MainFrame extends JFrame implements ActionListener{
 	
 	JPanel parentPanel;
@@ -397,6 +401,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		titleEnc.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 24));
 		titleEnc.setText("Choose File That You Want to Encrypt!");
 		
+		encryptButton.setForeground(new Color(178, 34, 34));
+		encryptButton.setBackground(new Color(205, 133, 63));
+		encryptButton.setContentAreaFilled(false);
+		encryptButton.setOpaque(true);
+		encryptButton.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 14));
+		
 		panel.add(encryptButton);
 		panel.add(titleEnc);
 		panel.add(fileContainer);
@@ -520,6 +530,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		titleDec.setEditable(false);
 		titleDec.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 24));
 		titleDec.setText("Choose File That You Want to Decrypt!");
+		
+		decryptButton.setForeground(new Color(178, 34, 34));
+		decryptButton.setBackground(new Color(205, 133, 63));
+		decryptButton.setContentAreaFilled(false);
+		decryptButton.setOpaque(true);
+		decryptButton.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 14));
 		
 		panel.add(decryptButton);
 		panel.add(titleDec);
